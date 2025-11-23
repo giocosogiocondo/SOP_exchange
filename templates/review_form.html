@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row mb-3">
+      <div class="col-12">
+          <h2>Write Review</h2>
+          <p class="text-muted">Read your partner's SOP on the left and provide feedback on the right.</p>
+      </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-primary border-2">
+        <div class="card-header bg-primary text-white d-flex justify-content-between">
+          <span>📄 Partner's SOP</span>
+          <span class="badge bg-white text-primary">Read Only</span>
+        </div>
+        <div class="card-body bg-secondary bg-opacity-10 p-0">
+          <div class="sop-container border-0 h-100 rounded-0" style="max-height: 750px; overflow-y: auto;">{{ other_sop }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 shadow">
+        <div class="card-header bg-white">
+            ✍️ Evaluation
+        </div>
+        <div class="card-body d-flex flex-column">
+          {% if my_review %}
+            <div class="alert alert-success text-center">
+                <i class="bi bi-check-circle-fill fs-4 d-block mb-2"></i>
+                <strong>Review Submitted!</strong><br>
+                Please wait for your partner to complete their review.
+            </div>
+            <div class="mt-3">
+                <h6>Your Review:</h6>
+                <pre class="bg-light p-3 border rounded small">{{ my_review }}</pre>
+            </div>
+            <div class="mt-auto text-center pt-3">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary">Back to Dashboard</a>
+            </div>
+          {% else %}
+            <form method="post" class="h-100 d-flex flex-column">
+              <div class="mb-3 flex-grow-1">
+                <label for="review_text" class="form-label text-muted small">Please follow the template below</label>
+                <textarea class="form-control font-monospace" id="review_text" name="review_text" required
+                  style="height: 100%; min-height: 500px; font-size: 0.9rem; background-color: #fffdfa; border-color: #e0d0b0;">
+[Structure & Flow]
+- 
+
+[Clarity & Tone]
+- 
+
+[Strengths]
+- 
+
+[Areas for Improvement]
+- 
+
+[Overall Comments]
+- </textarea>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Review</button>
+              </div>
+            </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

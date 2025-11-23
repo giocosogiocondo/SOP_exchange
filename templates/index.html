@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row justify-content-center align-items-center text-center pt-4 pb-5">
+    <div class="col-lg-8">
+      <h1 class="display-4 fw-bold mb-3">Refine Your Statement of Purpose</h1>
+      <p class="lead text-muted mb-5">
+        Join a community of scholars in <strong>{{ majors|default('your field') }}</strong>.<br>
+        Exchange peer reviews, receive feedback within 24 hours, and improve your admission chances.
+      </p>
+      
+      <div class="d-flex justify-content-center gap-3">
+        <a class="btn btn-primary btn-lg px-5 shadow-sm" href="{{ url_for('register_form') }}">Get Started</a>
+        <a class="btn btn-outline-dark btn-lg px-5" href="{{ url_for('login_form') }}">Login</a>
+      </div>
+
+      <div class="row mt-5 pt-4 g-4 text-start">
+        <div class="col-md-4">
+            <div class="card h-100 p-3 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-primary mb-3 h2"><i class="bi bi-people"></i></div>
+                    <h3 class="h5">Match by Major</h3>
+                    <p class="small text-muted mb-0">Connect with peers applying for similar degrees to get relevant feedback.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-3 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-primary mb-3 h2"><i class="bi bi-stopwatch"></i></div>
+                    <h3 class="h5">Strict Deadlines</h3>
+                    <p class="small text-muted mb-0">Our 24-hour review policy ensures you get feedback when you need it.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 p-3 border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="text-primary mb-3 h2"><i class="bi bi-file-earmark-text"></i></div>
+                    <h3 class="h5">Structured Feedback</h3>
+                    <p class="small text-muted mb-0">Use our academic template to provide and receive constructive criticism.</p>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

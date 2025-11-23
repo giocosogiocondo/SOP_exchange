@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ title if title else 'SOP Peer Review' }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #1a2a3a; /* Deep Navy */
+            --secondary-color: #f8f9fa; /* Light Gray */
+            --accent-color: #d4a017; /* Gold */
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f6f8;
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        h1, h2, h3, h4, h5, .navbar-brand, .card-header {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+        }
+        /* Navbar */
+        .navbar {
+            background-color: #fff !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 0.8rem 0;
+        }
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+        .nav-link {
+            color: var(--primary-color) !important;
+            font-weight: 500;
+            margin-left: 1rem;
+            transition: color 0.2s;
+        }
+        .nav-link:hover {
+            color: var(--accent-color) !important;
+        }
+        
+        /* Cards */
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            background: #fff;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .card-header {
+            background-color: #fff;
+            border-bottom: 1px solid #eee;
+            padding: 1.25rem 1.5rem;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* SOP Document Style */
+        .sop-container {
+            background-color: #fff;
+            border: 1px solid #e0e0e0;
+            padding: 2.5rem;
+            border-radius: 4px;
+            font-family: 'Merriweather', serif;
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #2c3e50;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            white-space: pre-wrap;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        /* Forms & Buttons */
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #ced4da;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(26, 42, 58, 0.1);
+        }
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            padding: 0.5rem 1.2rem;
+        }
+        .btn-primary:hover {
+            background-color: #13202c;
+        }
+        
+        /* Footer */
+        footer {
+            margin-top: auto;
+            padding: 2rem 0;
+            background-color: #fff;
+            border-top: 1px solid #eee;
+        }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="{{ url_for('index') }}">
+           🎓 SOP Exchange
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto align-items-center">
+            {% if user %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('same_major') }}">Find Partners</a></li>
+            <li class="nav-item ms-3">
+                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{{ url_for('logout') }}">Logout ({{ user['nickname'] }})</a>
+            </li>
+            {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login_form') }}">Login</a></li>
+            <li class="nav-item"><a class="btn btn-primary rounded-pill px-4 ms-2" href="{{ url_for('register_form') }}">Sign Up</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container py-5">
+      {% if message %}
+        <div class="alert alert-success shadow-sm border-0 rounded-3 mb-4 d-flex align-items-center">
+            <i class="bi bi-check-circle-fill me-2"></i> {{ message }}
+        </div>
+      {% endif %}
+      {% if error %}
+        <div class="alert alert-danger shadow-sm border-0 rounded-3 mb-4 d-flex align-items-center">
+             <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error }}
+        </div>
+      {% endif %}
+      
+      {% block content %}{% endblock %}
+    </div>
+    
+    <footer class="text-center text-muted">
+        <div class="container">
+            <small>&copy; 2025 SOP Exchange Platform. Academic Peer Review System.</small>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

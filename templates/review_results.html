@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Review Results</h2>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+  </div>
+
+  <div class="row">
+      <div class="col-lg-12 mb-5">
+          <div class="card">
+              <div class="card-header bg-light text-muted">
+                  Your Original SOP
+              </div>
+              <div class="card-body p-0">
+                  <div class="sop-container border-0" style="max-height: 300px;">
+                    {% if user['id'] == rr['requester_id'] %}
+                      {{ rr['requester_sop'] }}
+                    {% else %}
+                      {{ rr['recipient_sop'] }}
+                    {% endif %}
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row">
+      <div class="col-lg-6 mb-4">
+          <div class="card h-100 border-success border-2 shadow">
+              <div class="card-header bg-success text-white">
+                  <i class="bi bi-star-fill me-2"></i>Partner's Feedback for You
+              </div>
+              <div class="card-body">
+                  <pre class="sop-container border-0 shadow-none" style="font-family: 'Inter', sans-serif; font-size: 0.95rem;">
+{% if user['id'] == rr['requester_id'] %}
+{{ rr['recipient_review'] }}
+{% else %}
+{{ rr['requester_review'] }}
+{% endif %}
+                  </pre>
+              </div>
+          </div>
+      </div>
+
+      <div class="col-lg-6 mb-4">
+          <div class="card h-100">
+              <div class="card-header">
+                  Your Feedback for Partner
+              </div>
+              <div class="card-body bg-light">
+                  <pre class="text-muted small" style="white-space: pre-wrap;">
+{% if user['id'] == rr['requester_id'] %}
+{{ rr['requester_review'] }}
+{% else %}
+{{ rr['recipient_review'] }}
+{% endif %}
+                  </pre>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}

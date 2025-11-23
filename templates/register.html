@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm mt-4">
+      <div class="card-body p-5">
+        <h2 class="text-center mb-4">Create Account</h2>
+        <form method="post">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label for="nickname" class="form-label">Nickname</label>
+                <input type="text" class="form-control" id="nickname" name="nickname" required>
+                <div class="form-text">This will be visible to others.</div>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+          </div>
+
+          <hr class="my-4">
+          <h5 class="mb-3">Academic Profile</h5>
+
+          <div class="mb-3">
+            <label for="major" class="form-label">Target Major</label>
+            <select class="form-select" id="major" name="major" required>
+              <option value="" disabled selected>Select your field of study</option>
+              {% for m in majors %}
+                <option value="{{ m }}">{{ m }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="mb-4">
+            <label for="degree" class="form-label">Target Degree</label>
+            <select class="form-select" id="degree" name="degree" required>
+              <option value="" disabled selected>Select degree level</option>
+              {% for d in degrees %}
+                <option value="{{ d }}">{{ d }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Register & Join</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

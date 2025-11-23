@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <span>Request from <strong>{{ requester['nickname'] }}</strong></span>
+          <span class="badge bg-primary">New Request</span>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title mb-3 text-muted">Requester's SOP Preview</h5>
+          <div class="sop-container mb-5" style="max-height: 400px;">{{ rr['requester_sop'] }}</div>
+
+          <div class="bg-light p-4 rounded border">
+              <h4 class="h5 mb-3"><i class="bi bi-arrow-left-right me-2"></i>Accept & Exchange</h4>
+              <p class="text-muted small mb-3">
+                  To accept this request, you must submit your SOP now. 
+                  <span class="text-danger">The 24-hour timer will start immediately upon clicking Accept.</span>
+              </p>
+
+              <form method="post">
+                <div class="mb-3">
+                  <label for="sop" class="form-label fw-bold">Your SOP (Required to accept)</label>
+                  <textarea class="form-control" id="sop" name="sop" rows="10" placeholder="Paste your SOP here to start the exchange..." required></textarea>
+                </div>
+                <div class="d-flex gap-3 pt-2">
+                    <button type="submit" name="action" value="accept" class="btn btn-success flex-grow-1">
+                        <i class="bi bi-check-lg me-2"></i>Accept & Start Timer
+                    </button>
+                    <button type="submit" name="action" value="reject" class="btn btn-outline-danger">
+                        Reject
+                    </button>
+                </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

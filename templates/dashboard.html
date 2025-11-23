@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="row mb-4">
+      <div class="col-12">
+        <h2 class="mb-1">Dashboard</h2>
+        <p class="text-muted">Welcome back, <strong>{{ user['nickname'] }}</strong> ({{ user['major'] }})</p>
+      </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-white">
+      <span><i class="bi bi-envelope-exclamation me-2"></i>Pending Requests</span>
+      {% if pending_requests %}
+        <span class="badge bg-danger rounded-pill">{{ pending_requests|length }}</span>
+      {% endif %}
+    </div>
+    <div class="card-body p-0">
+      {% if pending_requests %}
+        <div class="list-group list-group-flush">
+          {% for req in pending_requests %}
+            <div class="list-group-item p-3 d-flex justify-content-between align-items-center">
+              <div>
+                <span class="fw-bold">{{ req.requester_nickname }}</span> has requested a review exchange.
+              </div>
+              <a class="btn btn-sm btn-outline-primary" href="{{ url_for('request_detail', req_id=req['id']) }}">View Request</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="p-4 text-center text-muted">
+            <p class="mb-0">No pending requests.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card mb-4 border-warning border-2">
+    <div class="card-header bg-warning bg-opacity-10 text-dark">
+      <span><i class="bi bi-hourglass-split me-2"></i>In Progress (Action Required)</span>
+    </div>
+    <div class="card-body">
+      {% if accepted_requests %}
+        <div class="row g-3">
+          {% for req in accepted_requests %}
+            <div class="col-md-6 col-xl-4">
+              <div class="card h-100 shadow-sm border">
+                <div class="card-body">
+                    <h5 class="card-title fs-6 text-muted mb-3">Partner: <strong class="text-dark">{{ req.partner_nickname }}</strong></h5>
+                    <div class="mb-3">
+                        <span class="badge bg-danger mb-1">Deadline</span><br>
+                        <span class="font-monospace small">{{ req['deadline'][:16].replace('T',' ') }} UTC</span>
+                    </div>
+                    
+                    {% if user['id'] == req['requester_id'] %}
+                        {% if not req['requester_review'] %}
+                            <a class="btn btn-warning btn-sm w-100 fw-bold" href="{{ url_for('review_form', req_id=req['id']) }}">
+                                <i class="bi bi-pencil-square"></i> Write Review
+                            </a>
+                        {% else %}
+                            <button class="btn btn-light btn-sm w-100 text-success border" disabled>
+                                <i class="bi bi-check2"></i> Review Submitted
+                            </button>
+                            <small class="text-muted d-block text-center mt-2">Waiting for partner...</small>
+                        {% endif %}
+                    {% elif user['id'] == req['recipient_id'] %}
+                        {% if not req['recipient_review'] %}
+                            <a class="btn btn-warning btn-sm w-100 fw-bold" href="{{ url_for('review_form', req_id=req['id']) }}">
+                                <i class="bi bi-pencil-square"></i> Write Review
+                            </a>
+                        {% else %}
+                            <button class="btn btn-light btn-sm w-100 text-success border" disabled>
+                                <i class="bi bi-check2"></i> Review Submitted
+                            </button>
+                            <small class="text-muted d-block text-center mt-2">Waiting for partner...</small>
+                        {% endif %}
+                    {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="text-center py-3 text-muted">
+            No active reviews currently. <a href="{{ url_for('same_major') }}">Find a partner?</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><i class="bi bi-archive me-2"></i>Completed Reviews</div>
+    <div class="card-body p-0">
+      {% if completed_requests %}
+        <div class="list-group list-group-flush">
+          {% for req in completed_requests %}
+            <div class="list-group-item p-3 d-flex justify-content-between align-items-center">
+              <span>Exchange with <strong>{{ req.partner_nickname }}</strong></span>
+              <a class="btn btn-sm btn-success text-white" href="{{ url_for('review_results', req_id=req['id']) }}">View Results</a>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="p-4 text-center text-muted">
+            No completed reviews yet.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
