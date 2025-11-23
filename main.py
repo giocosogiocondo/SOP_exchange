@@ -193,6 +193,7 @@ async def register(request: Request):
     nickname = data.get('nickname', [''])[0]
     password = data.get('password', [''])[0]
     major = data.get('major', [''])[0]
+    detailed_major = data.get('detailed_major', [''])[0]
     degree = data.get('degree', [''])[0]
 
     # 입력값 검증 실패 시 다시 폼 보여주기 (전역 상수 사용)
@@ -210,8 +211,8 @@ async def register(request: Request):
     try:
         with get_db_connection() as conn:
             c = conn.cursor()
-            c.execute('INSERT INTO users (username, nickname, password_hash, major, degree) VALUES (?, ?, ?, ?, ?)',
-                      (username, nickname, password_hash, major, degree))
+            c.execute('INSERT INTO users (username, nickname, password_hash, major, detailed_major, degree) VALUES (?, ?, ?, ?, ?, ?)',
+                      (username, nickname, password_hash, major, detailed_major, degree))
             conn.commit()
     except sqlite3.IntegrityError:
         # 중복 아이디 에러 처리 (전역 상수 사용)

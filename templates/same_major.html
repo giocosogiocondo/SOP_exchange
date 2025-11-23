@@ -18,6 +18,9 @@
                 <i class="bi bi-person"></i>
               </div>
               <h5 class="card-title mb-1">{{ u['nickname'] }}</h5>
+              {% if u['detailed_major'] %}
+              <p class="text-muted small mb-2">{{ u['detailed_major'] }}</p>
+              {% endif %}
               <span class="badge bg-info text-dark mb-4">{{ u['degree'] }} Candidate</span>
               
               <div class="mt-auto w-100">
