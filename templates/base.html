@@ -125,8 +125,11 @@
             {% if user %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('same_major') }}">Find Partners</a></li>
-            <li class="nav-item ms-3">
-                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{{ url_for('logout') }}">Logout ({{ user['nickname'] }})</a>
+            <li class="nav-item ms-3 d-flex align-items-center">
+                <a class="btn btn-outline-secondary btn-sm rounded-pill px-3 me-2" href="{{ url_for('logout') }}">Logout ({{ user['nickname'] }})</a>
+                <a class="nav-link text-secondary" href="{{ url_for('profile_form') }}" title="Profile">
+                    <i class="bi bi-person-circle fs-4"></i>
+                </a>
             </li>
             {% else %}
             <li class="nav-item"><a class="nav-link" href="{{ url_for('login_form') }}">Login</a></li>

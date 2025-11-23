@@ -1,26 +1,22 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-md-8 col-lg-6">
     <div class="card shadow-sm mt-4">
       <div class="card-body p-5">
-        <h2 class="text-center mb-4">Create Account</h2>
+        <h2 class="text-center mb-4">Edit Profile</h2>
+        
         <form method="post">
-          <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" name="username" required>
-            </div>
-            <div class="col-md-6 mb-3">
-                <label for="nickname" class="form-label">Nickname</label>
-                <input type="text" class="form-control" id="nickname" name="nickname" required>
-                <div class="form-text">This will be visible to others.</div>
-            </div>
-          </div>
-          
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password" required>
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" value="{{ user['username'] }}" disabled>
+            <div class="form-text">Username cannot be changed.</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="nickname" class="form-label">Nickname</label>
+            <input type="text" class="form-control" id="nickname" name="nickname" value="{{ user['nickname'] }}" required>
           </div>
 
           <hr class="my-4">
@@ -29,27 +25,35 @@
           <div class="mb-3">
             <label for="major" class="form-label">Target Major</label>
             <select class="form-select" id="major" name="major" required>
-              <option value="" disabled selected>Select your field of study</option>
+              <option value="" disabled>Select your field of study</option>
               {% for m in majors %}
-                <option value="{{ m }}">{{ m }}</option>
+                <option value="{{ m }}" {% if user['major'] == m %}selected{% endif %}>{{ m }}</option>
               {% endfor %}
             </select>
           </div>
+
           <div class="mb-3" id="custom-major-container" style="display: none;">
             <label for="custom-major" class="form-label">Custom Major</label>
-            <input type="text" class="form-control" id="custom-major" name="custom-major" placeholder="Please enter your major">
+            <input type="text" class="form-control" id="custom-major" name="custom-major" placeholder="Please enter your major" value="{{ user['major'] if user['major'] not in majors else '' }}">
           </div>
+          
+          <div class="mb-3">
+              <label for="detailed_major" class="form-label">Detailed Major</label>
+              <input type="text" class="form-control" id="detailed_major" name="detailed_major" value="{{ user['detailed_major'] if user['detailed_major'] else '' }}" placeholder="e.g. Artificial Intelligence, Solid State Physics">
+          </div>
+
           <div class="mb-4">
             <label for="degree" class="form-label">Target Degree</label>
             <select class="form-select" id="degree" name="degree" required>
-              <option value="" disabled selected>Select degree level</option>
+              <option value="" disabled>Select degree level</option>
               {% for d in degrees %}
-                <option value="{{ d }}">{{ d }}</option>
+                <option value="{{ d }}" {% if user['degree'] == d %}selected{% endif %}>{{ d }}</option>
               {% endfor %}
             </select>
           </div>
+
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary btn-lg">Register & Join</button>
+            <button type="submit" class="btn btn-primary btn-lg">Update Profile</button>
           </div>
         </form>
       </div>
@@ -63,6 +67,28 @@
     const customMajorContainer = document.getElementById('custom-major-container');
     const customMajorInput = document.getElementById('custom-major');
     const form = majorSelect.closest('form');
+    
+    // Check if initial major is not in the list (custom)
+    const majors = Array.from(majorSelect.options).map(opt => opt.value);
+    const currentMajor = "{{ user['major'] }}";
+    
+    // If current major is not in the list, select Etc. and show input
+    let isCustom = true;
+    for (let i=0; i<majors.length; i++) {
+        if (majors[i] === currentMajor) {
+            isCustom = false;
+            break;
+        }
+    }
+    
+    if (isCustom && currentMajor) {
+        // Find Etc. option and select it
+        // Note: Assuming 'Etc.' exists in the list as per main.py
+        majorSelect.value = 'Etc.';
+        customMajorContainer.style.display = 'block';
+        customMajorInput.setAttribute('required', 'required');
+        customMajorInput.value = currentMajor;
+    }
 
     // Show/hide custom major input based on selection
     majorSelect.addEventListener('change', function() {
@@ -93,3 +119,4 @@
   });
 </script>
 {% endblock %}
+
